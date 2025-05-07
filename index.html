@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0 KM Çin Maşınları</title>
+  <link href="https://unpkg.com/lucide@latest" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9fafb;
+      color: #1e293b;
+    }
+
+    header {
+      width: 100%;
+      background-color: navy;
+    }
+
+    .top-bar {
+      background-color: navy;
+      color: #f3f4f6;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .top-bar > div {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .center-info {
+      flex: 1;
+      justify-content: center;
+      font-weight: 500;
+      color: #a3e635;
+      display: flex;
+    }
+
+    .center-info span {
+      transition: opacity 0.5s ease;
+    }
+
+    nav {
+      background-color: darkblue;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: 100%;
+      position: relative;
+    }
+
+    .logo img {
+      max-width: 200px;
+    }
+
+    .search-box {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      max-width: 450px;
+      margin: 10px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 45px 10px 15px;
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .search-icon-container {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #cbd5e1;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 26px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .language-dropdown {
+      position: relative;
+    }
+
+    .language-dropdown button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .flags {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ddd;
+      display: none;
+      flex-direction: row;
+      z-index: 999;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .flags img {
+      width: 30px;
+      height: 20px;
+      margin: 3px;
+      cursor: pointer;
+    }
+
+    .flags.show {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search-box {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        margin-left: 30px;
+      }
+
+      .menu {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        padding-top: 10px;
+      }
+
+      .menu.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+        position: absolute;
+        right: 30px;
+        top: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top-bar">
+      <div>
+        <i data-lucide="phone"></i><span id="phone">055 421 01 45</span>
+        <i data-lucide="clock"></i><span id="hours">09:00 - 19:00</span>
+      </div>
+      <div class="center-info" id="changingText">
+        <i data-lucide="sparkles"></i><span id="center-message">Yeni Çin modelləri stokda</span>
+      </div>
+      <div>
+        <i data-lucide="map-pin"></i><span id="location">Yasamal</span>
+        <i data-lucide="mail"></i><span id="email">info@zerocar.az</span>
+        <div class="language-dropdown">
+          <button onclick="toggleFlags()">
+            <img src="https://flagcdn.com/w40/az.png" alt="AZ" id="currentFlag">
+          </button>
+          <div class="flags" id="flagDropdown">
+            <img src="https://flagcdn.com/w40/az.png" onclick="changeLang('az')" alt="AZ" />
+            <img src="https://flagcdn.com/w40/gb.png" onclick="changeLang('en')" alt="EN" />
+            <img src="https://flagcdn.com/w40/ru.png" onclick="changeLang('ru')" alt="RU" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="logo">
+        <img src="logo.png" alt="Logo" />
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Model, marka və ya il yazın..." />
+        <div class="search-icon-container" onclick="searchNow()">
+          <i data-lucide="search"></i>
+        </div>
+      </div>
+
+      <div class="hamburger" onclick="toggleMenu()">
+        <i data-lucide="menu"></i>
+      </div>
+
+      <ul class="menu" id="menu">
+        <li><a href="#" id="all-cars">Bütün Maşınlar</a></li>
+        <li><a href="#" id="brands">Çin Brendləri</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('active');
+    }
+
+    function searchNow() {
+      const query = document.getElementById('searchInput').value.trim();
+      alert(query ? "Axtarılır: " + query : "Zəhmət olmasa model və ya marka yazın.");
+    }
+
+    function toggleFlags() {
+      const flagDropdown = document.getElementById('flagDropdown');
+      flagDropdown.classList.toggle('show');
+    }
+
+    const langData = {
+      az: {
+        centerMessages: [
+          "Yeni Çin modelləri stokda",
+          "Test sürüşləri üçün qeydiyyat açıqdır",
+          "0 KM maşınlara 1 il zəmanət",
+          "Sərfəli kredit imkanları"
+        ],
+        searchPlaceholder: "Model, marka və ya il yazın...",
+        phone: "055 421 01 45",
+        hours: "09:00 - 19:00",
+        location: "Yasamal",
+        email: "info@zerocar.az",
+        allCars: "Bütün Maşınlar",
+        brands: "Çin Brendləri",
+        flag: "az"
+      },
+      en: {
+        centerMessages: [
+          "New Chinese models in stock",
+          "Test drive registration is open",
+          "1-year warranty on 0 KM cars",
+          "Affordable credit options"
+        ],
+        searchPlaceholder: "Enter model, brand or year...",
+        phone: "055 421 01 45",
+        hours: "09:00 - 19:00",
+        location: "Yasamal",
+        email: "info@zerocar.az",
+        allCars: "All Cars",
+        brands: "Chinese Brands",
+        flag: "gb"
+      },
+      ru: {
+        centerMessages: [
+          "Новые китайские модели в наличии",
+          "Регистрация на тест-драйв открыта",
+          "1 год гарантии на машины 0 км",
+          "Выгодные условия кредита"
+        ],
+        searchPlaceholder: "Введите модель, марку или год...",
+        phone: "055 421 01 45",
+        hours: "09:00 - 19:00",
+        location: "Ясамал",
+        email: "info@zerocar.az",
+        allCars: "Все автомобили",
+        brands: "Китайские бренды",
+        flag: "ru"
+      }
+    };
+
+    let currentLang = 'az';
+    let msgIndex = 0;
+
+    function changeLang(lang) {
+      currentLang = lang;
+      const data = langData[lang];
+
+      document.getElementById('center-message').textContent = data.centerMessages[0];
+      document.getElementById('searchInput').placeholder = data.searchPlaceholder;
+      document.getElementById('phone').textContent = data.phone;
+      document.getElementById('hours').textContent = data.hours;
+      document.getElementById('location').textContent = data.location;
+      document.getElementById('email').textContent = data.email;
+      document.getElementById('all-cars').textContent = data.allCars;
+      document.getElementById('brands').textContent = data.brands;
+
+      // Change the flag on the button
+      document.getElementById('currentFlag').src = `https://flagcdn.com/w40/${data.flag}.png`;
+    }
+
+    setInterval(() => {
+      const messages = langData[currentLang].centerMessages;
+      msgIndex = (msgIndex + 1) % messages.length;
+      const span = document.querySelector("#changingText span");
+      span.style.opacity = 0;
+      setTimeout(() => {
+        span.textContent = messages[msgIndex];
+        span.style.opacity = 1;
+      }, 300);
+    }, 4000);
+  </script>
+</body>
+</html>
